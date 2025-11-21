@@ -12,6 +12,9 @@ Available tools:
 - explain_code(path: str, code_snippet: str) - Explain code from file or snippet
 - git_status() - Get git repository status
 - git_safe_command(command: str) - Execute safe git commands
+- generate_tests(file_path: str, test_framework: str) - Generate test templates
+- analyze_error(error_message: str, file_path: str) - Analyze errors for debugging
+- run_diagnostics(file_path: str) - Run diagnostics on files
 
 You MUST respond with valid JSON in ONE of these formats:
 
