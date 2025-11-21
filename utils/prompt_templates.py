@@ -2,18 +2,21 @@
 from textwrap import dedent
 
 AGENT_SYSTEM_PROMPT = dedent("""
-You are a deterministic assistant that helps by calling tools when needed.
-When you need to call a tool, output EXACTLY a single line that starts with:
-TOOL_CALL: <JSON>
-Where <JSON> is a JSON object with keys:
-  - tool: one of ["read_file","write_file","run_shell"]
-  - args: an object with the tool arguments.
+You are an agent that must decide whether to use tools.
 
-Example:
-TOOL_CALL: {"tool":"read_file","args":{"path":"data/notes.txt","start":0,"end":1024}}
+You MUST respond with ONE of the two formats below:
 
-If you have a final natural-language answer, output EXACTLY one line starting with:
-FINAL: <your final text here>
+1️⃣ FINAL ANSWER
+{"type": "final", "content": "<answer>"}
 
-Do not output anything else. Keep each output to a single line: either TOOL_CALL: ... OR FINAL: ...
+2️⃣ TOOL CALL
+{"type": "tool", "name": "<tool_name>", "arguments": { ... }}
+
+Rules:
+- NEVER add explanation outside JSON
+- NEVER add backticks
+- NEVER add commentary
+- ONLY valid JSON
+- If unsure, ask for more information using final mode
+
 """)
