@@ -6,11 +6,13 @@ from utils.prompt_templates import AGENT_SYSTEM_PROMPT
 from tools.read_file import read_file
 from tools.write_file import write_file
 from tools.run_shell import run_shell
+from tools.search_project import search_in_project
 
 TOOL_MAP = {
     "read_file": read_file,
     "write_file": write_file,
     "run_shell": run_shell,
+    "search_in_project": search_in_project,
 }
 
 def parse_llm_response(response: str):

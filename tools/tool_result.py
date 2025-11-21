@@ -15,3 +15,9 @@ class ToolResult:
             "meta": self.meta,
             "error": self.error,
         }
+    
+    def __str__(self):
+        return str(self.to_dict())
+    
+    def __repr__(self):
+        return str(self.to_dict())
