@@ -10,6 +10,8 @@ from .explain_code import explain_code as _explain_code
 from .git_operations import git_status as _git_status, git_safe_command as _git_safe_command
 from .test_generation import generate_tests as _generate_tests
 from .debug_assistant import analyze_error as _analyze_error, run_diagnostics as _run_diagnostics
+from .refactoring import refactor_code as _refactor_code, create_backup as _create_backup
+from .task_planning import plan_task as _plan_task
 
 class ReadFileInput(BaseModel):
     path: str = Field(description="Path to the file to read")
@@ -41,6 +43,18 @@ class AnalyzeErrorInput(BaseModel):
 
 class RunDiagnosticsInput(BaseModel):
     file_path: str = Field(description="Path to file to run diagnostics on")
+
+class RefactorCodeInput(BaseModel):
+    file_path: str = Field(description="Path to file to refactor")
+    refactor_type: str = Field(default="extract_function", description="Type of refactoring")
+    backup: bool = Field(default=True, description="Create backup before refactoring")
+
+class CreateBackupInput(BaseModel):
+    file_path: str = Field(description="Path to file to backup")
+
+class PlanTaskInput(BaseModel):
+    user_query: str = Field(description="User query to plan")
+    available_tools: list = Field(default=None, description="Available tools list")
 
 class ReadFileTool(BaseTool):
     name: str = "read_file"
@@ -130,4 +144,31 @@ class RunDiagnosticsTool(BaseTool):
 
     def _run(self, file_path: str) -> str:
         result = _run_diagnostics(file_path)
+        return str(result)
+
+class RefactorCodeTool(BaseTool):
+    name: str = "refactor_code"
+    description: str = "Analyze code for refactoring opportunities"
+    args_schema: Type[BaseModel] = RefactorCodeInput
+
+    def _run(self, file_path: str, refactor_type: str = "extract_function", backup: bool = True) -> str:
+        result = _refactor_code(file_path, refactor_type, backup)
+        return str(result)
+
+class CreateBackupTool(BaseTool):
+    name: str = "create_backup"
+    description: str = "Create backup of a file"
+    args_schema: Type[BaseModel] = CreateBackupInput
+
+    def _run(self, file_path: str) -> str:
+        result = _create_backup(file_path)
+        return str(result)
+
+class PlanTaskTool(BaseTool):
+    name: str = "plan_task"
+    description: str = "Create step-by-step plan for complex tasks"
+    args_schema: Type[BaseModel] = PlanTaskInput
+
+    def _run(self, user_query: str, available_tools: list = None) -> str:
+        result = _plan_task(user_query, available_tools)
         return str(result)

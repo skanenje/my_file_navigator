@@ -15,6 +15,9 @@ Available tools:
 - generate_tests(file_path: str, test_framework: str) - Generate test templates
 - analyze_error(error_message: str, file_path: str) - Analyze errors for debugging
 - run_diagnostics(file_path: str) - Run diagnostics on files
+- refactor_code(file_path: str, refactor_type: str, backup: bool) - Analyze refactoring opportunities
+- create_backup(file_path: str) - Create file backups
+- plan_task(user_query: str, available_tools: list) - Plan complex tasks (internal use)
 
 You MUST respond with valid JSON in ONE of these formats:
 

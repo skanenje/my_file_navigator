@@ -11,6 +11,8 @@ from tools.explain_code import explain_code
 from tools.git_operations import git_status, git_safe_command
 from tools.test_generation import generate_tests
 from tools.debug_assistant import analyze_error, run_diagnostics
+from tools.refactoring import refactor_code, create_backup
+from tools.task_planning import plan_task
 
 TOOL_MAP = {
     "read_file": read_file,
@@ -23,6 +25,9 @@ TOOL_MAP = {
     "generate_tests": generate_tests,
     "analyze_error": analyze_error,
     "run_diagnostics": run_diagnostics,
+    "refactor_code": refactor_code,
+    "create_backup": create_backup,
+    "plan_task": plan_task,
 }
 
 def parse_llm_response(response: str):
