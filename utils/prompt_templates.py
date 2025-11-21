@@ -9,6 +9,9 @@ Available tools:
 - write_file(path: str, content: str) - Write content to file
 - run_shell(command: str) - Execute shell command
 - search_in_project(query: str) - Search for files matching query in project
+- explain_code(path: str, code_snippet: str) - Explain code from file or snippet
+- git_status() - Get git repository status
+- git_safe_command(command: str) - Execute safe git commands
 
 You MUST respond with valid JSON in ONE of these formats:
 

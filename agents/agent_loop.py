@@ -7,12 +7,22 @@ from tools.read_file import read_file
 from tools.write_file import write_file
 from tools.run_shell import run_shell
 from tools.search_project import search_in_project
+from tools.explain_code import explain_code
+from tools.git_operations import git_status, git_safe_command
+from tools.test_generation import generate_tests
+from tools.debug_assistant import analyze_error, run_diagnostics
 
 TOOL_MAP = {
     "read_file": read_file,
     "write_file": write_file,
     "run_shell": run_shell,
     "search_in_project": search_in_project,
+    "explain_code": explain_code,
+    "git_status": git_status,
+    "git_safe_command": git_safe_command,
+    "generate_tests": generate_tests,
+    "analyze_error": analyze_error,
+    "run_diagnostics": run_diagnostics,
 }
 
 def parse_llm_response(response: str):

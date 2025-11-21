@@ -2,7 +2,7 @@
 import os
 from crewai import Agent, Task, Crew
 from crewai.llm import LLM
-from tools.crewai_tools import ReadFileTool, WriteFileTool, RunShellTool, SearchProjectTool
+from tools.crewai_tools import ReadFileTool, WriteFileTool, RunShellTool, SearchProjectTool, ExplainCodeTool, GitStatusTool, GitSafeCommandTool
 
 def create_file_navigator_agent():
     """Create a CrewAI agent for file navigation"""
@@ -16,7 +16,7 @@ def create_file_navigator_agent():
         goal="Navigate and manipulate files using available tools",
         backstory="You are an expert file system navigator that can read, write, and execute commands.",
         llm=llm,
-        tools=[ReadFileTool(), WriteFileTool(), RunShellTool(), SearchProjectTool()],
+        tools=[ReadFileTool(), WriteFileTool(), RunShellTool(), SearchProjectTool(), ExplainCodeTool(), GitStatusTool(), GitSafeCommandTool()],
         verbose=True
     )
     return agent
