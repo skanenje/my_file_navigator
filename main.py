@@ -1,6 +1,10 @@
 # main.py
 import argparse
+import os
+from dotenv import load_dotenv
 from agents.agent_loop import run_agent_repl
+
+load_dotenv()
 
 def main():
     parser = argparse.ArgumentParser()

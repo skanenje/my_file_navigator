@@ -1,3 +1,4 @@
 python-dotenv
-pytest
-PY
+google-generativeai
+crewai
+crewai-tools

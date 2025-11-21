@@ -1,7 +1,7 @@
 # agents/agent_loop.py
 import json, time
 from typing import Dict
-from agents.ollama_client import call_ollama
+from agents.llm_client import get_llm_client
 from utils.prompt_templates import AGENT_SYSTEM_PROMPT
 from tools.read_file import read_file
 from tools.write_file import write_file
@@ -13,15 +13,20 @@ TOOL_MAP = {
     "run_shell": run_shell,
 }
 
-def parse_llm_line(line: str):
-    line = line.strip()
-    if line.startswith("TOOL_CALL:"):
-        json_part = line[len("TOOL_CALL:"):].strip()
-        return ("tool_call", json.loads(json_part))
-    if line.startswith("FINAL:"):
-        return ("final", line[len("FINAL:"):].strip())
-    # fallback: nothing recognized
-    return ("unknown", line)
+def parse_llm_response(response: str):
+    response = response.strip()
+    try:
+        # Try to parse as JSON
+        data = json.loads(response)
+        if data.get("type") == "final":
+            return ("final", data.get("content", ""))
+        elif data.get("type") == "tool":
+            return ("tool_call", {"tool": data.get("name"), "args": data.get("arguments", {})})
+    except json.JSONDecodeError:
+        pass
+    
+    # Fallback: treat as final answer
+    return ("final", response)
 
 def run_agent_repl(user_input: str, model: str = None, max_iterations: int = 6):
     history = []
@@ -30,8 +35,9 @@ def run_agent_repl(user_input: str, model: str = None, max_iterations: int = 6):
     while loop_count < max_iterations:
         loop_count += 1
         prompt = system + "\n\nConversation history:\n" + "\n".join(history) + "\nAssistant:"
-        llm_out = call_ollama(prompt, model=model)
-        typ, payload = parse_llm_line(llm_out)
+        llm_client = get_llm_client()
+        llm_out = llm_client.call(prompt)
+        typ, payload = parse_llm_response(llm_out)
         if typ == "final":
             return {"status":"ok", "answer": payload, "history": history}
         elif typ == "tool_call":
